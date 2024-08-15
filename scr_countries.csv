@@ -1,0 +1,5 @@
+user_role_id,user_role,user_role_name
+018e20d4-1363-7b84-8ca8-dc9bdd570ad7,adminr,Administrator Super User
+018e20d4-1365-7da8-b4dd-8b4ff08e31d0,editor,Editor
+018e20d4-1365-7da8-b4dd-8b4ee109e9c8,subscr,Subscriber
+018e20d4-1365-7da8-b4dd-8b50f59c17a2,advent,Adventurer Explorer

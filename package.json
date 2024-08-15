@@ -1,0 +1,22 @@
+{
+  "name": "2024-v03-scr-db",
+  "version": "1.0.0",
+  "description": "- Postgres 16.2\r - dbdiagram.io Database Diagram as Code\r - PL/pgSQL - SQL Procedural Language\r - psql - PostgreSQL interactive terminal",
+  "main": "generateUUIDv7.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react-router-dom": "^6.22.3",
+    "readline-sync": "^1.4.10",
+    "uuid": "^9.0.1",
+    "uuidv7": "^0.6.3"
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.3.3"
+  }
+}

@@ -1,0 +1,6 @@
+schema_type_id,schema_type,schema_type_name
+018e20ea-7585-7d81-bcab-6fbeb701e61e,users,Users
+018e20ea-7588-71ca-b77e-6e14f491751d,lodge,Lodging
+018e20ea-7588-71ca-b77e-6e15f22c724f,resta,Restaurants
+018e20ea-7588-71ca-b77e-6e175d7f107a,trail,Hiking Trails
+018e20ea-7588-71ca-b77e-6e163377e646,wfall,Waterfalls

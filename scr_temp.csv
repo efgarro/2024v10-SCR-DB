@@ -1,0 +1,3 @@
+0190c5a2-a83c-7009-a375-559ddf73106d
+
+INSERT INTO scr_schema_types(schema_type_id,schema_type,schema_type_name) VALUES ('0190c5a2-a83c-7009-a375-559ddf73106d','rgion','Region');

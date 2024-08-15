@@ -1,0 +1,10 @@
+hub_id,region,image_set_id,hub_name,hub,Latitude,Longitude
+0190c372-ffe0-797f-a6f5-a8e8854c64b7,caribe,0190c3f6-1eda-7429-9655-ef86e7b4385d,Ciudad Limon,climon,9.99077,-83.03105
+0190c373-0019-710d-98c8-3de7a9ccd6aa,caribe,0190c3f6-1edc-78f1-9443-8989ee63f136,Puerto Viejo,ptovjo,9.65612,-82.75216
+0190c373-0019-710d-98c8-3de8a68810d6,guanac,0190c3f6-1edc-78f1-9443-89884a9d8ad8,Tamarindo,tmrndo,10.30082,-85.84005
+0190c373-0019-710d-98c8-3dea86e85f3a,guanac,0190c3f6-1edc-78f1-9443-898a0eb37bcc,Santa Cruz,stacrz,10.26304,-85.58588
+0190c373-0019-710d-98c8-3de94ce04342,guanac,0190c3f6-1edd-7a06-935f-8db8a6dcf8c6,Nicoya ,nicoya,10.14858,-85.45381
+0190c373-0019-710d-98c8-3debd3804cb5,guanac,0190c3f6-1edd-7a06-935f-8db9167d3b5e,Liberia,lberia,10.62967,-85.4382
+0190c373-0019-710d-98c8-3deca3d0218a,zonsur,0190c3f6-1edd-7a06-935f-8dbae2fa27a4,Perez Zeledon,perzel,9.3739,-83.70303
+0190c373-0019-710d-98c8-3ded5d0d98da,pactrl,0190c3f6-1edd-7a06-935f-8dbbea7b9cab,Dominical,domcal,9.25555,-83.86293
+0190c373-0019-710d-98c8-3deea928e704,pactrl,0190c3f6-1edd-7a06-935f-8dbc40aa61be,Jaco / Herradura,jacher,9.6182,-84.63153
