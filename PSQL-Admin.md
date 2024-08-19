@@ -2,6 +2,9 @@
 
 psql --host=localhost --port=5432 --username=postgres --dbname=postgres
 
+psql --host=54.205.165.107 --port=5432 --username=efgarro --dbname=2024v10-scr-db [password: Due***ga]
+
+
 -f, --file=FILENAME execute commands from file, then exit
 
 ## psql Backslash Commands.
