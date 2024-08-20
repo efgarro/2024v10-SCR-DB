@@ -5,11 +5,14 @@
 - psql - PostgreSQL interactive terminal
 - PL/pgSQL - SQL Procedural Language
 
+
 ### ssh Login to EC2 Instance
 
 ```sh
 ssh -i "/c/00-CodeShop/99-References/ssh_auth_keys/postgresql24v10.pem" ubuntu@ec2-54-205-165-107.compute-1.amazonaws.com
 ```
+
+
 ### psql Login to EC2 Instance 
 
 ```sh
@@ -27,6 +30,7 @@ git branch -M main
 git remote add origin https://github.com/efgarro/2024v10-SCR-DB.git
 git push -u origin main
 ```
+
 
 ### Tags Naming Convention
 
