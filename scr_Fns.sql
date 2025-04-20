@@ -1,31 +1,3 @@
-CREATE OR REPLACE FUNCTION fn_one()
-RETURNS VARCHAR
-AS 
-$$
-DECLARE
-name VARCHAR; 
-BEGIN
-SELECT first_name INTO name FROM actor WHERE actor_id = 1;
-RETURN name;
-END;
-$$
-LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION fn_one()
-RETURNS VARCHAR
-AS 
-$$
-DECLARE
-name VARCHAR; 
-uuid VARCHAR;
-BEGIN
-SELECT region_name INTO name FROM scr_regions WHERE region_id = '0190c374-d614-7633-8070-e0516d1afd9d';
-SELECT INTO uuid uuid_generate_v7();
-RETURN name;
-END;
-$$
-LANGUAGE plpgsql;
-
 
 CREATE OR REPLACE FUNCTION register_lodge(uuid, uuid, uuid,  varchar, varchar, varchar, varchar, numeric, numeric, varchar)
 RETURNS void
@@ -39,8 +11,6 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
-SELECT uuid_generate_v7();
 
 DROP FUNCTION register_lodge(uuid,character varying,character varying,character varying,character varying,numeric,numeric)
 
@@ -62,8 +32,3 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER image_set_trigger BEFORE INSERT ON scr_places
 FOR EACH ROW EXECUTE FUNCTION image_set_trigger();
 
-SELECT * FROM scr_places JOIN scr_lodging ON scr_places.place_id = scr_lodging.place_id;
-
-
-DO
-$body$
