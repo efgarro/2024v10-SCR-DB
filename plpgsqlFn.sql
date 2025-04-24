@@ -27,14 +27,18 @@ $$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION register_lodge(uuid, uuid, uuid,  varchar, varchar, varchar, varchar, numeric, numeric, varchar)
+CREATE OR REPLACE FUNCTION register_lodge(schema_type varchar, hub varchar, name varchar, description varchar, latitude numeric, longitude numeric, email varchar)
 RETURNS void
 AS 
 $$
+DECLARE
+    image_set_id uuid;
+    place_id uuid;
+    lodge_id uuid;
 BEGIN
-INSERT INTO scr_image_sets(image_set_id, schema_type) VALUES ($3, $4);
-INSERT INTO scr_places (place_id, image_set_id, schema_type, hub, name, description, latitude,  longitude) VALUES ($1, $3, $4, $5, $6, $7, $8, $9);
-INSERT INTO scr_lodging  (lodge_id, place_id, email) VALUES ($2, $1, $10);
+INSERT INTO scr_image_sets(image_set_id, schema_type) VALUES (uuid_generate_v7(), schema_type) RETURNING scr_image_sets.image_set_id INTO image_set_id;
+INSERT INTO scr_places (place_id, image_set_id, schema_type, hub, name, description, latitude,  longitude, geo) VALUES (uuid_generate_v7(), image_set_id, schema_type, hub, name, description, latitude, longitude, POINT(longitude, latitude)::geometry) RETURNING scr_places.place_id INTO place_id;
+INSERT INTO scr_lodging  (lodge_id, place_id, email) VALUES (uuid_generate_v7(), place_id, email);
 END;
 $$
 LANGUAGE plpgsql;
@@ -43,6 +47,7 @@ LANGUAGE plpgsql;
 SELECT uuid_generate_v7();
 
 DROP FUNCTION register_lodge(uuid,character varying,character varying,character varying,character varying,numeric,numeric)
+DROP FUNCTION register_lodge(uuid, uuid, uuid,  varchar, varchar, varchar, varchar, numeric, numeric, varchar)
 
 
 -- TRIGGER FUNCTION

@@ -106,6 +106,18 @@ $body$
 LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_8()
+RETURNS void
+AS 
+$body$
+DECLARE
+    actor_last_name varchar(45);
+BEGIN
+    INSERT INTO actor(first_name, last_name) VALUES('Felip', 'LeMont') RETURNING actor.last_name INTO actor_last_name;
+    RAISE NOTICE 'last name: %', actor_last_name;
+END;
+$body$
+LANGUAGE plpgsql;
 
 CREATE TABLE employees (
   employee_id serial primary key,
