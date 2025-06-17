@@ -39,6 +39,7 @@ BEGIN
 INSERT INTO scr_image_sets(image_set_id, schema_type) VALUES (uuid_generate_v7(), schema_type) RETURNING scr_image_sets.image_set_id INTO image_set_id;
 INSERT INTO scr_places (place_id, image_set_id, schema_type, hub, name, description, latitude,  longitude, geo) VALUES (uuid_generate_v7(), image_set_id, schema_type, hub, name, description, latitude, longitude, POINT(longitude, latitude)::geometry) RETURNING scr_places.place_id INTO place_id;
 INSERT INTO scr_lodging  (lodge_id, place_id, email) VALUES (uuid_generate_v7(), place_id, email);
+SELECT * FROM scr_places JOIN scr_lodging ON scr_places.place_id = scr_lodging.place_id;
 END;
 $$
 LANGUAGE plpgsql;
