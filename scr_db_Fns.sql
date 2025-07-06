@@ -14,3 +14,28 @@ RETURN QUERY SELECT json_agg(r) FROM (SELECT scr_places.place_id, scr_places.ima
 END;
 $$
 LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION insert_image_into_db(p_image_id uuid, p_image_set_id uuid, p_file_name varchar, p_url varchar, p_orientation varchar)
+RETURNS void
+AS 
+$$
+BEGIN
+INSERT INTO scr_images(image_id, image_set_id, file_name, uploaded, url, orientation) VALUES (p_image_id, p_image_set_id, now(), p_file_name, p_url, p_orientation);
+UPDATE scr_image_sets SET image_set_stack = array_append(image_set_stack, p_image_id) WHERE image_set_id = p_image_set_id;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION get_image_set_stack(p_image_set_id uuid)
+RETURNS SETOF json
+AS 
+$$
+DECLARE
+v_image_set_stack uuid[];
+BEGIN
+SELECT scr_image_sets.image_set_stack INTO v_image_set_stack FROM scr_image_sets WHERE scr_image_sets.image_set_id = p_image_set_id;
+RETURN QUERY SELECT json_agg(img) FROM (SELECT scr_images.image_id AS id, scr_images.url FROM scr_images INNER JOIN unnest(v_image_set_stack) WITH ORDINALITY tbl(id, idx) ON scr_images.image_id = tbl.id ORDER BY tbl.idx) AS img;
+END;
+$$
+LANGUAGE plpgsql;

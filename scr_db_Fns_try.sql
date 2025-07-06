@@ -50,3 +50,141 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER image_set_trigger BEFORE INSERT ON scr_places
 FOR EACH ROW EXECUTE FUNCTION image_set_trigger();
 
+
+CREATE OR REPLACE FUNCTION insert_image_into_db(p_image_id uuid, p_image_set_id uuid, p_file_name varchar, p_url varchar, p_orientation varchar)
+RETURNS void
+AS 
+$$
+BEGIN
+INSERT INTO scr_images(image_id, image_set_id, file_name, uploaded, url, orientation) VALUES (p_image_id, p_image_set_id, now(), p_file_name, p_url, p_orientation);
+UPDATE scr_image_sets SET image_set_stack = array_append(image_set_stack, p_image_id) WHERE image_set_id = p_image_set_id;
+END;
+$$
+LANGUAGE plpgsql;
+
+\latitude '0197aa20-b97b-7e9c-a359-09b239fbdffe';
+
+UPDATE scr_image_sets SET image_set_stack = array_append(image_set_stack,'01978018-2d3f-7e24-a5fb-4036d50af2ef') WHERE image_set_id = '0197aa20-b97b-7e9c-a359-09b239fbdffe';
+
+image_set_id:"0197aa20-b97b-7e9c-a359-09b239fbdffe"
+
+
+CREATE TYPE image_set_stack AS (image_set_stack uuid[])
+
+CREATE OR REPLACE FUNCTION get_image_set_stack(p_image_set_id uuid)
+RETURNS SETOF uuid[]
+AS 
+$$
+BEGIN
+RETURN QUERY SELECT scr_image_sets.image_set_stack FROM scr_image_sets WHERE scr_image_sets.image_set_id = p_image_set_id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- CREATE OR REPLACE FUNCTION get_image_set_stack(p_image_set_id uuid)
+
+
+CREATE OR REPLACE FUNCTION get_image_set_stack()
+RETURNS void
+AS 
+$$
+DECLARE
+v_image_set_stack uuid[];
+v_image_id uuid;
+BEGIN
+SELECT scr_image_sets.image_set_stack INTO v_image_set_stack FROM scr_image_sets WHERE scr_image_sets.image_set_id = '0197b3f0-a25d-737e-9b5d-a4d618102baa';
+FOREACH v_image_id SLICE 0 IN ARRAY v_image_set_stack
+LOOP
+RAISE NOTICE 'The uuid is: %', v_image_id;
+END LOOP;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_image_set_stack()
+RETURNS SETOF json
+AS 
+$$
+DECLARE
+v_image_set_stack uuid[];
+v_image_id uuid;
+BEGIN
+SELECT scr_image_sets.image_set_stack INTO v_image_set_stack FROM scr_image_sets WHERE scr_image_sets.image_set_id = '0197b3f0-a25d-737e-9b5d-a4d618102baa';
+RETURN QUERY SELECT json_agg(img) FROM (SELECT scr_images.url FROM scr_images WHERE scr_images.image_id = ANY (v_image_set_stack)) AS img;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION get_image_set_stack(p_image_set_id uuid)
+RETURNS SETOF json
+AS 
+$$
+DECLARE
+v_image_set_stack uuid[];
+BEGIN
+SELECT scr_image_sets.image_set_stack INTO v_image_set_stack FROM scr_image_sets WHERE scr_image_sets.image_set_id = p_image_set_id;
+RETURN QUERY SELECT json_agg(img) FROM (SELECT scr_images.image_id AS id, scr_images.url FROM scr_images WHERE scr_images.image_id = ANY (v_image_set_stack)) AS img;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+-- unnest() WITH ORDINALITY
+
+CREATE OR REPLACE FUNCTION get_image_set_stack(p_image_set_id uuid)
+RETURNS SETOF json
+AS 
+$$
+DECLARE
+v_image_set_stack uuid[];
+BEGIN
+SELECT scr_image_sets.image_set_stack INTO v_image_set_stack FROM scr_image_sets WHERE scr_image_sets.image_set_id = p_image_set_id;
+RETURN QUERY SELECT json_agg(img) FROM (SELECT scr_images.image_id AS id, scr_images.url FROM scr_images INNER JOIN unnest(v_image_set_stack) WITH ORDINALITY tbl(id, idx) ON scr_images.image_id = tbl.id ORDER BY tbl.idx) AS img;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- FOREACH
+
+CREATE TYPE t_image_set_stack AS (id uuid, url varchar);
+
+CREATE OR REPLACE FUNCTION get_image_set_stack(p_image_set_id uuid)
+RETURNS SETOF json
+AS 
+$$
+DECLARE
+v_image_set_stack t_image_set_stack[];
+v_image t_image_set_stack;
+v_image_set_uuids uuid[];
+v_uuid uuid;
+BEGIN
+SELECT scr_image_sets.image_set_stack INTO v_image_set_uuids FROM scr_image_sets WHERE scr_image_sets.image_set_id = p_image_set_id;
+FOREACH v_uuid IN ARRAY v_image_set_uuids
+LOOP
+SELECT scr_images.image_id AS id, scr_images.url INTO v_image FROM scr_images WHERE scr_images.image_id = v_uuid;
+SELECT array_append(v_image_set_stack, v_image);
+END LOOP;
+RETURN QUERY SELECT json_agg(v_image_set_stack);
+END;
+$$
+LANGUAGE plpgsql;
+
+'0197b3f0-a25d-737e-9b5d-a4d618102baa'
+-- RETURNS SETOF uuid[]
+-- RETURN v_image_set_stack;
+
+
+
+-- query directly from API, hence it was not used
+CREATE OR REPLACE FUNCTION update_image_set_stack(p_image_set_stack uuid[])
+RETURNS void
+AS 
+$$
+BEGIN
+
+SELECT scr_image_sets.image_set_stack INTO v_image_set_stack FROM scr_image_sets WHERE scr_image_sets.image_set_id = p_image_set_id;
+RETURN QUERY SELECT json_agg(img) FROM (SELECT scr_images.url FROM scr_images WHERE scr_images.image_id = ANY (v_image_set_stack)) AS img;
+END;
+$$
+LANGUAGE plpgsql;
